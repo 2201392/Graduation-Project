@@ -2,9 +2,16 @@
 import React, { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronDown, faBrain } from '@fortawesome/free-solid-svg-icons';
+import { Link } from 'react-router-dom';
 import './navbar.css';
+//import { useLocation } from 'react-router-dom';
 
+//function Navbar(){
+   
+  
+  
 const Navbar = () => {
+  
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
   const dropdownItems = [
@@ -29,6 +36,7 @@ const Navbar = () => {
       </span>
     </div>
   );
+  
 
   return (
     <header className="navbar-header">
@@ -37,7 +45,7 @@ const Navbar = () => {
 
         <ul className="navbar-links">
           {/* ❌ رابط Home محذوف */}
-          
+          <li><a href="#home" className="nav-link">Home</a></li>
           <li><a href="#about" className="nav-link">About</a></li>
           <li><a href="#blogs" className="nav-link">Blogs</a></li>
           
@@ -68,9 +76,16 @@ const Navbar = () => {
         </ul>
 
         {/* ❌ قسم أزرار Log in و Sign up محذوف */}
+         <div className='navbar-actions'>
+          <Link to="/Login"><button className='btn btn-login'>Log in</button></Link>
+          <Link to="/Signup"><button className='btn btn-signup'>Sign up</button></Link>
+          </div>
+          
       </nav>
     </header>
   );
 };
+
+
 
 export default Navbar;

@@ -1,0 +1,88 @@
+/* =====================
+AuthPage.css (UI matching provided design)
+===================== */
+
+:root {
+--primary: #4c9aff;
+--primary-dark: #2f7be5;
+--bg-gradient: linear-gradient(135deg, #cfe5ff, #b9d7ff);
+--card-bg: #eaf4ff;
+--text-main: #1f2937;
+--text-muted: #6b7280;
+--border-soft: #c7dbf5;
+}
+
+* {
+  box-sizing: border-box;
+  }
+
+body {
+margin: 0;
+font-family: 'Segoe UI', Tahoma, sans-serif;
+}
+
+/* =====================
+Layout
+===================== */
+.auth-page-wrapper {  
+min-height: 100vh;
+display: flex;
+background: var(--bg-gradient);
+}
+
+.auth-image-section {
+flex: 1.2;
+display: flex;
+align-items: center;
+justify-content: center;
+}
+
+.image-placeholder {
+width: 85%;
+max-width: 520px;
+}
+
+.image-placeholder img {
+width: 100%;
+height: auto;
+}
+
+/* src/pages/SignLog/AuthPage.css */
+
+/* ---------------------------------
+    عام وتخطيط الصفحة
+    --------------------------------- */
+/* ---------------------------------
+    قسم النموذج (القسم الأيمن)
+    --------------------------------- */
+.auth-form-section {
+    flex: 1; 
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    /* زيادة الـ Padding لتوفير مساحة حول الـ Card */
+    padding: 60px; 
+    background-color: transparent; 
+    z-index: 1; 
+    gap: 10px; /* هذا لا يؤثر طالما لديكِ عنصر واحد (Card) بداخله */
+}
+
+/* ---------------------------------
+    استجابة العرض (Media Queries)
+    --------------------------------- */
+@media (max-width: 992px) {
+    .auth-page-wrapper {
+        flex-direction: column;
+    }
+
+    .auth-image-section {
+        display: none; 
+    }
+
+    .auth-form-section {
+        flex: none;
+        width: 100%;
+        padding: 40px 20px;
+        justify-content: center;
+    }
+}
