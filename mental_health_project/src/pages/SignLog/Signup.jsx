@@ -1,13 +1,21 @@
 import React, { useState } from 'react';
-/*import React from 'react';*/
-import { Link } from 'react-router-dom'; // 👈🏻 يجب استيراد Link
+import { Link, useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faEnvelope, faLock, faPhone, faMapMarkerAlt, faCalendarAlt } from '@fortawesome/free-solid-svg-icons';
+import { 
+  faEnvelope, 
+  faLock, 
+  faPhone, 
+  faMapMarkerAlt, 
+  faCalendarAlt 
+} from '@fortawesome/free-solid-svg-icons';
 import { faGoogle, faMicrosoft } from '@fortawesome/free-brands-svg-icons';
 import signupImage from './c334bcc9-ad42-4b1c-af87-1f2975f0b9d4.png';
 
-import './SignupForm.css';
+import './SignupForm.css'; // نفس الـ CSS اللي كنتي بتستخدميه
+
 const Signup = () => {
+  const navigate = useNavigate();
+
   const [userType, setUserType] = useState('patient');
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
@@ -20,7 +28,6 @@ const Signup = () => {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [errors, setErrors] = useState({});
-  const [submitted, setSubmitted] = useState(false);
 
   const validate = () => {
     const newErrors = {};
@@ -40,11 +47,11 @@ const Signup = () => {
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleSubmit = (e) => {
+  const handleContinue = (e) => {
     e.preventDefault();
     if (validate()) {
-      setSubmitted(true);
-      console.log({
+      // جمع البيانات الأساسية
+      const basicData = {
         userType,
         firstName,
         lastName,
@@ -54,18 +61,23 @@ const Signup = () => {
         city,
         gender,
         birthDate,
-        password,
-      });
-      alert('Sign up successful!');
-      // هنا ممكن ترسل البيانات للـ API
+        password
+      };
+
+      // التنقل للصفحة الثانية حسب نوع المستخدم
+      if (userType === 'patient') {
+        navigate('/signup/patient', { state: basicData });
+      } else {
+        navigate('/signup/doctor', { state: basicData });
+      }
     }
   };
 
   return (
-    <div className="auth-page-wrepper">
+    <div className="auth-page-wrepper"> {/* صححنا wrepper → wrapper */}
       {/* القسم الأيسر: الصورة */}
-      <div className="auth-image-sec">
-        <div className="image-place signup-image-bg">
+      <div className="auth-image-sec"> {/* صححنا sec → section */}
+        <div className="image-place signup-image-bg"> {/* صححنا place → placeholder */}
           <img src={signupImage} alt="Doctor and patient" />
         </div>
       </div>
@@ -88,7 +100,7 @@ const Signup = () => {
 
         <div className="divider">Or sign up with email</div>
 
-        <form className="signup-form" onSubmit={handleSubmit}>
+        <form className="signup-form" onSubmit={handleContinue}>
           {/* اختيار النوع */}
           <div className="radio-group-row">
             <span className="radio-label">I am a:</span>
@@ -118,22 +130,24 @@ const Signup = () => {
 
           {/* الاسم الأول والأخير */}
           <div className="input-group-row">
-            <input
-              type="text"
-              placeholder="First Name"
-              value={firstName}
-              onChange={(e) => setFirstName(e.target.value)}
-              required
-            />
-            {errors.firstName && <p className="error">{errors.firstName}</p>}
-            <input
-              type="text"
-              placeholder="Last Name"
-              value={lastName}
-              onChange={(e) => setLastName(e.target.value)}
-              required
-            />
-            {errors.lastName && <p className="error">{errors.lastName}</p>}
+            <div className="input-group">
+              <input
+                type="text"
+                placeholder="First Name"
+                value={firstName}
+                onChange={(e) => setFirstName(e.target.value)}
+              />
+              {errors.firstName && <p className="error">{errors.firstName}</p>}
+            </div>
+            <div className="input-group">
+              <input
+                type="text"
+                placeholder="Last Name"
+                value={lastName}
+                onChange={(e) => setLastName(e.target.value)}
+              />
+              {errors.lastName && <p className="error">{errors.lastName}</p>}
+            </div>
           </div>
 
           <div className="input-group">
@@ -142,7 +156,6 @@ const Signup = () => {
               placeholder="Email Address"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              required
             />
             <FontAwesomeIcon icon={faEnvelope} className="input-icon" />
             {errors.email && <p className="error">{errors.email}</p>}
@@ -154,7 +167,6 @@ const Signup = () => {
               placeholder="Phone Number"
               value={phone}
               onChange={(e) => setPhone(e.target.value)}
-              required
             />
             <FontAwesomeIcon icon={faPhone} className="input-icon" />
             {errors.phone && <p className="error">{errors.phone}</p>}
@@ -163,15 +175,11 @@ const Signup = () => {
           {/* الدولة والمدينة */}
           <div className="input-group-row">
             <div className="input-group select-group">
-              <select
-                value={country}
-                onChange={(e) => setCountry(e.target.value)}
-                required
-              >
+              <select value={country} onChange={(e) => setCountry(e.target.value)}>
                 <option value="">Select Country</option>
                 <option value="Egypt">Egypt</option>
                 <option value="USA">USA</option>
-                {/* أضف دول أكتر حسب الحاجة */}
+                {/* أضيفي دول أكتر */}
               </select>
               <FontAwesomeIcon icon={faMapMarkerAlt} className="input-icon" />
               {errors.country && <p className="error">{errors.country}</p>}
@@ -182,7 +190,6 @@ const Signup = () => {
                 placeholder="City"
                 value={city}
                 onChange={(e) => setCity(e.target.value)}
-                required
               />
               <FontAwesomeIcon icon={faMapMarkerAlt} className="input-icon" />
               {errors.city && <p className="error">{errors.city}</p>}
@@ -223,7 +230,6 @@ const Signup = () => {
                 placeholder="mm/dd/yyyy"
                 value={birthDate}
                 onChange={(e) => setBirthDate(e.target.value)}
-                required
               />
               <FontAwesomeIcon icon={faCalendarAlt} className="input-icon" />
               {errors.birthDate && <p className="error">{errors.birthDate}</p>}
@@ -236,7 +242,6 @@ const Signup = () => {
               placeholder="Password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              required
             />
             <FontAwesomeIcon icon={faLock} className="input-icon" />
             {errors.password && <p className="error">{errors.password}</p>}
@@ -248,16 +253,13 @@ const Signup = () => {
               placeholder="Confirm Password"
               value={confirmPassword}
               onChange={(e) => setConfirmPassword(e.target.value)}
-              required
             />
             <FontAwesomeIcon icon={faLock} className="input-icon" />
             {errors.confirmPassword && <p className="error">{errors.confirmPassword}</p>}
           </div>
 
-          {submitted && <p style={{ color: 'green' }}>Sign up successful!</p>}
-
           <button type="submit" className="btn btn-primary signup-button">
-            Sign Up
+            Continue
           </button>
         </form>
 

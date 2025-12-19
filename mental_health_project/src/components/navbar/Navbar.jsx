@@ -1,17 +1,23 @@
 // src/components/Navbar/Navbar.jsx
 import React, { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faChevronDown, faBrain } from '@fortawesome/free-solid-svg-icons';
-import { Link } from 'react-router-dom';
+import { 
+  faChevronDown, 
+  faBrain, 
+  faUser, 
+  faSignOutAlt,
+  faRobot 
+} from '@fortawesome/free-solid-svg-icons';
+import { Link, useNavigate } from 'react-router-dom';
 import './navbar.css';
-//import { useLocation } from 'react-router-dom';
 
-//function Navbar(){
-   
-  
-  
 const Navbar = () => {
-  
+  const navigate = useNavigate();
+
+  // حالة المستخدم: true = مسجل دخول، false = غير مسجل
+  // دلوقتي هنخليها true عشان نشوف التصميم بعد الدخول (غيريها حسب اللوجيك الحقيقي بعدين)
+  const [isLoggedIn, setIsLoggedIn] = useState(true); // غيريها لـ false لو عايزة تشوفي حالة غير مسجل
+
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
   const dropdownItems = [
@@ -22,12 +28,16 @@ const Navbar = () => {
     'Eating Disorders',
   ];
 
-  // وظيفة لتبديل حالة القائمة المنسدلة عند النقر على "Tests"
   const toggleDropdown = () => {
     setIsDropdownOpen(!isDropdownOpen);
   };
-    
-  // اللوجو (مع أيقونة مؤقتة)
+
+  const handleLogout = () => {
+    // هنا هتحطي اللوجيك الحقيقي للـ logout (مسح توكن، إلخ)
+    setIsLoggedIn(false);
+    navigate('/login');
+  };
+
   const Logo = (
     <div className="navbar-logo">
       <span className="logo-text">
@@ -36,7 +46,6 @@ const Navbar = () => {
       </span>
     </div>
   );
-  
 
   return (
     <header className="navbar-header">
@@ -44,29 +53,29 @@ const Navbar = () => {
         {Logo}
 
         <ul className="navbar-links">
-          {/* ❌ رابط Home محذوف */}
-          <li><a href="#home" className="nav-link">Home</a></li>
-          <li><a href="#about" className="nav-link">About</a></li>
-          <li><a href="#blogs" className="nav-link">Blogs</a></li>
-          
-          {/* تعديل بند "Tests" ليصبح يحتوي على القائمة المنسدلة */}
-          <li className="dropdown-link" 
-              onClick={toggleDropdown}
-              onMouseEnter={() => setIsDropdownOpen(true)} // فتح عند التمرير
-              onMouseLeave={() => setIsDropdownOpen(false)} // إغلاق عند المغادرة
-          > 
-            <a href="#tests" onClick={(e) => e.preventDefault()} className="nav-link"> 
-                Tests 
-                <FontAwesomeIcon icon={faChevronDown} size="xs" className="dropdown-arrow" /> {/* أيقونة السهم */}
-            </a>
-            
-            {/* 4. إظهار القائمة المنسدلة شرطياً */}
+          <li><Link to="/" className="nav-link">Home</Link></li>
+          <li><Link to="/about" className="nav-link">About</Link></li>
+          <li><Link to="/blogs" className="nav-link">Blogs</Link></li>
+
+          {/* Tests Dropdown */}
+          <li 
+            className="dropdown-link"
+            onMouseEnter={() => setIsDropdownOpen(true)}
+            onMouseLeave={() => setIsDropdownOpen(false)}
+          >
+            <span className="nav-link" onClick={toggleDropdown}>
+              Tests 
+              <FontAwesomeIcon icon={faChevronDown} size="xs" className="dropdown-arrow" />
+            </span>
+
             {isDropdownOpen && (
               <div className="dropdown-menu">
                 <ul>
                   {dropdownItems.map((item, index) => (
                     <li key={index} className="dropdown-item">
-                      <a href={`#${item.toLowerCase().replace(/\s/g, '-')}`}>{item}</a>
+                      <Link to={`/tests/${item.toLowerCase().replace(/\s/g, '-')}`}>
+                        {item}
+                      </Link>
                     </li>
                   ))}
                 </ul>
@@ -75,17 +84,50 @@ const Navbar = () => {
           </li>
         </ul>
 
-        {/* ❌ قسم أزرار Log in و Sign up محذوف */}
-         <div className='navbar-actions'>
-          <Link to="/Login"><button className='btn btn-login'>Log in</button></Link>
-          <Link to="/Signup"><button className='btn btn-signup'>Sign up</button></Link>
-          </div>
-          
+        {/* القسم الأيمن: يتغير حسب حالة الدخول */}
+        <div className="navbar-right">
+          {isLoggedIn ? (
+            <>
+              {/* حقل البحث */}
+              <div className="search-bar">
+                <input 
+                  type="text" 
+                  placeholder="Search for doctors..." 
+                  className="search-input"
+                />
+              </div>
+
+              {/* Robot Sessions */}
+              <Link to="/robot-sessions" className="nav-link robot-link">
+                <FontAwesomeIcon icon={faRobot} /> Robot Sessions
+              </Link>
+
+              {/* Profile */}
+              <Link to="/profile" className="profile-btn">
+                <FontAwesomeIcon icon={faUser} />
+                <span>Profile</span>
+              </Link>
+
+              {/* Logout */}
+              <button onClick={handleLogout} className="logout-btn">
+                <FontAwesomeIcon icon={faSignOutAlt} />
+                Logout
+              </button>
+            </>
+          ) : (
+            <>
+              <Link to="/Login">
+                <button className="btn btn-login">Log in</button>
+              </Link>
+              <Link to="/Signup">
+                <button className="btn btn-signup">Sign up</button>
+              </Link>
+            </>
+          )}
+        </div>
       </nav>
     </header>
   );
 };
-
-
 
 export default Navbar;

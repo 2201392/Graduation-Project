@@ -1,36 +1,30 @@
-/* src/components/Navbar/Navbar.css */
+/* src/components/Navbar/navbar.css */
+
 :root {
     --primary-color: #84d1f0; 
     --text-color: #333333;
     --light-gray-bg: #f5f5f5;
-    --border-separator-color: #333333; /* لون الخط الأسود */
+    --border-separator-color: #333333;
 }
 
-/* ------------------- تنسيقات شريط التنقل الأساسية ------------------- */
+/* ------------------- شريط التنقل الأساسي ------------------- */
 .navbar-header {
     background-color: #ffffff;
-    
-    /* 1. التثبيت في أعلى الصفحة (Fixed Navbar) */
-    position: fixed; 
-    top: 0; 
-    width: 100%; 
-    z-index: 1000; /* ليبقى فوق باقي المحتويات */
-    
-    /* 2. إضافة خط فاصل أسود */
-    border-bottom: 1px solid var(--border-separator-color); 
-    
-    /* يمكن إزالة box-shadow السابق إذا كان الخط الفاصل كافياً */
-    box-shadow: 0 1px 5px rgba(0, 0, 0, 0.1); 
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 1000;
+    border-bottom: 1px solid var(--border-separator-color);
+    box-shadow: 0 1px 5px rgba(0, 0, 0, 0.1);
 }
 
 .navbar-container {
-    /* ... (التنسيق كما هو للحفاظ على محاذاة المحتويات) ... */
     display: flex;
-    justify-content: space-between; 
+    justify-content: space-between;
     align-items: center;
-    max-width: 1400px; 
+    max-width: 1400px;
     margin: 0 auto;
-    padding: 10px 40px; 
+    padding: 10px 40px;
     min-height: 70px;
 }
 
@@ -42,6 +36,7 @@
     display: flex;
     align-items: center;
 }
+
 .navbar-logo .logo-icon {
     font-size: 1.2rem;
     margin-right: 8px;
@@ -52,9 +47,9 @@
 .navbar-links {
     list-style: none;
     display: flex;
-    margin: 0 auto; /* هذا هو المفتاح للتوسيط */
+    margin: 0 auto;
     padding: 0;
-    gap: 30px; 
+    gap: 30px;
 }
 
 .nav-link {
@@ -70,21 +65,17 @@
     color: var(--primary-color);
 }
 
-/* تفعيل اللون الأزرق للرابط النشط (Tests) */
 .nav-link.active {
     color: var(--primary-color);
     border-bottom: 2px solid var(--primary-color);
 }
 
-
-/* ------------------- تنسيقات القائمة المنسدلة ------------------- */
+/* ------------------- القائمة المنسدلة (Tests) ------------------- */
 .dropdown-link {
     position: relative;
     cursor: pointer;
-    margin: 0; 
 }
 
-/* الأيقونة الصغيرة داخل رابط Tests */
 .dropdown-arrow {
     font-size: 0.7em;
     margin-left: 5px;
@@ -93,17 +84,14 @@
 
 .dropdown-menu {
     position: absolute;
-    top: 100%; 
-    left: 0; 
-    z-index: 10; 
-    
+    top: 100%;
+    left: 0;
+    z-index: 10;
     background-color: #ffffff;
-    border-radius: 6px; /* حواف مستديرة قليلاً */
+    border-radius: 6px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-    min-width: 250px; 
+    min-width: 250px;
     padding: 10px 0;
-    
-    /* انيميشن الظهور */
     opacity: 0;
     transform: translateY(-10px);
     animation: fadeIn 0.3s forwards;
@@ -116,58 +104,238 @@
 }
 
 .dropdown-item a {
-    display: block; 
+    display: block;
     padding: 10px 20px;
     text-decoration: none;
     color: #333;
-    font-weight: 400; /* وزن عادي للنص */
+    font-weight: 400;
     transition: background-color 0.2s;
 }
 
 .dropdown-item a:hover {
-    background-color: var(--light-gray-bg); 
+    background-color: var(--light-gray-bg);
     color: #57b7e4;
 }
-.navbar-actions {
+
+/* ------------------- القسم الأيمن (يتغير حسب حالة الدخول) ------------------- */
+.navbar-right {
     display: flex;
-    gap: 10px;
-}
-.btn {
-    padding: 8px 16px;
-    border: 1px solid transparent;
-    border-radius: 4px;
-    font-weight: 600px;
-    cursor: pointer;
-    transition: background-color 0.3s, color 0.3s, border-color 0.3;
-}
-.btn-login {
-    background-color:  var(--light-gray-bg);
-    color: #1178b4;
-    border-color: none;
-}
-.btn-login:hover {
-    background-color: #0786eefa;
-    color: black;
-}
-.btn-signup {
-    background-color:  var(--primary-color);
-    color: #1178b4;
-    border-color: none;
-}
-.btn-signup:hover {
-    background-color: #0786eefa;
-    color: black;
+    align-items: center;
+    gap: 20px;
+    flex-wrap: wrap;
 }
 
-/* ------------------- Media Queries (الاستجابة) ------------------- */
-@media (max-width: 768px) {
+/* حقل البحث */
+.search-bar {
+    position: relative;
+    max-width: 300px;
+}
+
+.search-input {
+    width: 280px;
+    padding: 12px 20px 12px 44px;
+    border: 1px solid #ddd;
+    border-radius: 30px;
+    background: #f8f9fa;
+    font-size: 16px;
+    transition: all 0.3s ease;
+}
+
+.search-input::placeholder {
+    color: #aaa;
+}
+
+.search-input:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    background: white;
+    box-shadow: 0 0 0 3px rgba(132, 209, 240, 0.2);
+}
+
+/* أيقونة البحث داخل الحقل */
+.search-bar::before {
+    content: "🔍";
+    position: absolute;
+    left: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 18px;
+    color: #888;
+}
+
+/* Robot Sessions */
+.robot-link {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--text-color);
+    font-weight: 500;
+    text-decoration: none;
+    padding: 10px 16px;
+    border-radius: 8px;
+    transition: all 0.3s;
+}
+
+.robot-link:hover {
+    background: #f0f8ff;
+    color: var(--primary-color);
+}
+
+/* Profile Button */
+.profile-btn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: #f1f5f9;
+    color: var(--text-color);
+    padding: 10px 16px;
+    border-radius: 30px;
+    text-decoration: none;
+    font-weight: 500;
+    transition: all 0.3s;
+}
+
+.profile-btn:hover {
+    background: #e2e8f0;
+}
+
+/* Logout Button */
+.logout-btn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: #fee2e2;
+    color: #dc2626;
+    padding: 10px 16px;
+    border: none;
+    border-radius: 30px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.logout-btn:hover {
+    background: #fecaca;
+}
+
+/* ------------------- أزرار Log in و Sign up (قبل الدخول) ------------------- */
+.navbar-actions {
+    display: flex;
+    gap: 12px;
+}
+
+.btn {
+    padding: 10px 20px;
+    border: 1px solid transparent;
+    border-radius: 30px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s;
+    font-size: 15px;
+}
+
+.btn-login {
+    background-color: var(--light-gray-bg);
+    color: #1178b4;
+}
+
+.btn-login:hover {
+    background-color: #0786eefa;
+    color: white;
+}
+
+.btn-signup {
+    background-color: var(--primary-color);
+    color: white;
+}
+
+.btn-signup:hover {
+    background-color: #0786eefa;
+}
+
+/* ------------------- Media Queries ------------------- */
+@media (max-width: 1200px) {
+    .search-input {
+        width: 240px;
+    }
+}
+
+@media (max-width: 1024px) {
+    .navbar-container {
+        padding: 10px 30px;
+    }
+
+    .search-input {
+        width: 220px;
+    }
+
+    .navbar-right {
+        gap: 15px;
+    }
+}
+
+@media (max-width: 992px) {
     .navbar-container {
         padding: 10px 20px;
-        justify-content: space-between;
     }
+
     .navbar-links {
-         margin: 0; /* إلغاء التوسيط في شاشات الموبايل */
-         gap: 20px;
+        gap: 20px;
+    }
+
+    .search-input {
+        width: 200px;
+    }
+}
+
+@media (max-width: 768px) {
+    .navbar-container {
+        flex-direction: column;
+        gap: 16px;
+        padding: 16px 20px;
+    }
+
+    .navbar-links {
+        margin: 0;
+        order: 3;
+        width: 100%;
+        justify-content: center;
+    }
+
+    .navbar-right,
+    .navbar-actions {
+        order: 2;
+        width: 100%;
+        justify-content: center;
+    }
+
+    .search-input {
+        width: 100%;
+        max-width: 320px;
+    }
+
+    .robot-link,
+    .profile-btn,
+    .logout-btn {
+        padding: 10px 14px;
+        font-size: 14px;
+    }
+}
+
+@media (max-width: 480px) {
+    .navbar-links {
+        flex-direction: column;
+        gap: 12px;
+        text-align: center;
+    }
+
+    .navbar-right {
+        flex-direction: column;
+        gap: 12px;
+    }
+
+    .search-input {
+        width: 100%;
     }
 }
 
